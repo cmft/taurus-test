@@ -1,10 +1,5 @@
 FROM debian:stable
 
-# add EPICS repo and repo-key
-ADD http://epics.nsls2.bnl.gov/debian/repo-key.pub repo-key.pub
-RUN apt-key add repo-key.pub
-ADD epics.list /etc/apt/sources.list.d/
-
 # Update the repo info
 RUN apt-get update
 
@@ -27,10 +22,10 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get install -y mysql-server
 
 #install tango-db
-RUN apt-get install -y tango-db
+#RUN apt-get install -y tango-db
 
 #install tango-test DS
-RUN apt-get install -y tango-test
+#RUN apt-get install -y tango-test
 
 # install sardana dependencies
 RUN apt-get install -y python ipython python-h5py python-lxml python-numpy\ 
@@ -48,20 +43,11 @@ COPY supervisord.conf /etc/supervisor/conf.d/
 
 # TODO: use just basic database, not the one with sardemo
 # copy & untar mysql tango database (with sardemo) and change owner to mysql user
-ADD tangodbsardemo.tar /var/lib/mysql/
-RUN chown -R mysql /var/lib/mysql/tango
+#ADD tangodbsardemo.tar /var/lib/mysql/
+#RUN chown -R mysql /var/lib/mysql/tango
 
 # define tango host env var
 ENV TANGO_HOST=taurus-test:10000
-
-# install epics
-RUN apt-get install -y epics-dev
-
-# install pyepics
-RUN easy_install -U pyepics
-
-# copy test epics IOC database
-ADD testioc.db /
 
 # add USER ENV (necessary for spyderlib in taurus.qt.qtgui.editor)
 ENV USER=root
