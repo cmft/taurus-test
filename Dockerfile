@@ -72,6 +72,9 @@ COPY epicsdebs /epicsdebs
 COPY epics.list /etc/apt/sources.list.d/
 RUN apt-get update
 
+# define epics channel access
+ENV EPICS_CA_AUTO_ADDR_LIST=NO
+
 # install epics
 RUN apt-get install -y epics-dev
 
