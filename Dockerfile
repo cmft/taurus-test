@@ -21,6 +21,12 @@ ENV DEBIAN_FRONTEND noninteractive
 # install mysql server
 RUN apt-get install -y default-mysql-server
 
+# workarounds for problems with starting mysqld
+RUN sed -i 's/\/var\/run\/mysqld\/mysqld.pid/\/tmp\/mysqld.pid/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN sed -i 's/\/var\/run\/mysqld\/mysqld.sock/\/tmp\/mysqld.sock/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN mkdir /var/run/mysqld
+RUN ln -s /tmp/mysqld.d /var/run/mysqld.d
+
 #install tango-db
 RUN apt-get install -y tango-db
 
